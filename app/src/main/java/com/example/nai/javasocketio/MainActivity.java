@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.baoyz.widget.PullRefreshLayout;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> messageId;
     private ArrayList<String> msg;
     private ArrayList<String> time;
+    private LottieAnimationView animationView;
 
     private ChangeDataFormat dateFormat;
     private MessageListAdapter mAdapter;
@@ -74,6 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         edittext_chatbox = findViewById(R.id.edittext_chatbox);
         Button button_chatbox_send = findViewById(R.id.button_chatbox_send);
         button_chatbox_send.setOnClickListener(this);
+
+        animationView = findViewById(R.id.animation_view);
+//        animationView.setAnimation("animation.json");
+        animationView.loop(true);
+        animationView.playAnimation();
+
+
         swipeRefreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -141,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     private void addMessage(String messageid, String message) {
+        animationView.loop(true);
         if (!tmpMessage.equals(message)) {
             imageurl.add("https://lh3.googleusercontent.com/l6JAkhvfxbP61_FWN92j4ulDMXJNH3HT1DR6xrE7MtwW-2AxpZl_WLnBzTpWhCuYkbHihgBQ=w640-h400-e365");
             messageId.add(messageid);
@@ -155,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void makeNotification(String alertDetail) {
+
+        animationView.loop(false);
+
         Context context = getApplicationContext();
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
